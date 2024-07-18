@@ -1,11 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>Haobo Lv's Personal Homepage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haobo Lv - Personal Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 1em;
+            border-radius: 5px;
+        }
+        h1 {
+            margin-bottom: 0;
+        }
+        .subtitle {
+            font-style: italic;
+            margin-top: 0.5em;
+        }
+        main {
+            background-color: #ffffff;
+            padding: 2em;
+            margin-top: 2em;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5em;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .github-link {
+            display: inline-block;
+            margin-top: 1em;
+            padding: 0.5em 1em;
+            background-color: #3498db;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+        .github-link:hover {
+            background-color: #2980b9;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            main {
+                padding: 1em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Haobo Lv's Personal Homepage</h1>
-    <p>This is a homepage for Haobo Lv.</p>
-    <p>Email: lvhaobo@foxmail.com</p>
+    <header>
+        <h1>Haobo Lv</h1>
+        <p class="subtitle">Master's Student in Natural Language Processing</p>
+    </header>
+    
+    <main>
+        <section>
+            <h2>关于我</h2>
+            <p>我是一名在大连外国语大学软件学院就读的硕士研究生，主要研究方向为自然语言处理和虚假信息检测。我热衷于探索语言和技术的交叉领域，致力于开发创新的解决方案来应对信息时代的挑战。</p>
+        </section>
+        
+        <section>
+            <h2>研究兴趣</h2>
+            <ul>
+                <li>自然语言处理 (NLP)</li>
+                <li>虚假信息检测</li>
+                <li>机器学习</li>
+                <li>文本分析</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>教育背景</h2>
+            <p>大连外国语大学 软件学院 | 硕士在读</p>
+        </section>
+        
+        <a href="https://github.com/may3rr" class="github-link" target="_blank">在 GitHub 上关注我</a>
+    </main>
 </body>
 </html>
