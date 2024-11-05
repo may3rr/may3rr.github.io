@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haobo Lv - Personal Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,43 +19,103 @@
             background-color: #2c3e50;
             color: #ecf0f1;
             text-align: center;
-            padding: 1em;
-            border-radius: 5px;
+            padding: 2em;
+            border-radius: 10px;
+            margin-bottom: 2em;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         h1 {
-            margin-bottom: 0;
+            margin-bottom: 0.5em;
+            font-size: 2.5em;
         }
         .subtitle {
             font-style: italic;
             margin-top: 0.5em;
+            font-size: 1.2em;
+            color: #bdc3c7;
         }
         main {
             background-color: #ffffff;
             padding: 2em;
-            margin-top: 2em;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        section {
+            margin-bottom: 2em;
         }
         h2 {
             color: #2c3e50;
             border-bottom: 2px solid #3498db;
             padding-bottom: 0.5em;
+            margin-top: 1.5em;
+            display: flex;
+            align-items: center;
+        }
+        h2 i {
+            margin-right: 10px;
         }
         ul {
             padding-left: 20px;
+            list-style-type: none;
         }
-        .github-link {
-            display: inline-block;
+        ul li {
+            margin-bottom: 0.5em;
+            position: relative;
+            padding-left: 25px;
+        }
+        ul li:before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        .social-links {
             margin-top: 1em;
+            display: flex;
+            justify-content: center;
+            gap: 1em;
+        }
+        .social-link {
+            display: inline-flex;
+            align-items: center;
             padding: 0.5em 1em;
             background-color: #3498db;
             color: #ffffff;
             text-decoration: none;
-            border-radius: 3px;
-            transition: background-color 0.3s ease;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
-        .github-link:hover {
+        .social-link:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .publication {
+            background-color: #f8f9fa;
+            padding: 1.5em;
+            border-radius: 8px;
+            margin-bottom: 1em;
+            border-left: 4px solid #3498db;
+            transition: transform 0.2s ease;
+        }
+        .publication:hover {
+            transform: translateX(5px);
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.2em 0.6em;
+            font-size: 0.8em;
+            font-weight: 600;
+            border-radius: 3px;
+            margin-left: 0.5em;
+            background-color: #e74c3c;
+            color: white;
+        }
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            margin-bottom: 0.5em;
         }
         @media (max-width: 600px) {
             body {
@@ -63,6 +124,9 @@
             main {
                 padding: 1em;
             }
+            .social-links {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -70,30 +134,68 @@
     <header>
         <h1>Haobo Lv</h1>
         <p class="subtitle">Master's Student in Natural Language Processing</p>
+        <div class="social-links">
+            <a href="https://github.com/may3rr" class="social-link">
+                <i class="fa fa-github"></i>&nbsp; GitHub
+            </a>
+            <a href="mailto:lvhaobo@foxmail.com" class="social-link">
+                <i class="fa fa-envelope"></i>&nbsp; Email
+            </a>
+        </div>
     </header>
     
     <main>
         <section>
-            <h2>关于我</h2>
-            <p>我是一名在大连外国语大学软件学院就读的硕士研究生，主要研究方向为自然语言处理和虚假信息检测。我热衷于探索语言和技术的交叉领域，致力于开发创新的解决方案来应对信息时代的挑战。</p>
+            <h2><i class="fa fa-user"></i>关于我</h2>
+            <p>我是一名在大连外国语大学软件学院就读的硕士研究生，主要研究方向为自然语言处理和虚假信息检测。在学术研究中，我专注于探索大型语言模型在科技文献综述生成和虚假信息检测领域的应用。通过结合多智能体系统和深度学习技术，致力于开发创新的解决方案来提升信息的可靠性和可访问性。</p>
         </section>
         
         <section>
-            <h2>研究兴趣</h2>
+            <h2><i class="fa fa-lightbulb-o"></i>研究兴趣</h2>
             <ul>
-                <li>自然语言处理 (NLP)</li>
-                <li>虚假信息检测</li>
-                <li>机器学习</li>
-                <li>文本分析</li>
+                <li>自然语言处理 (NLP) 与大语言模型</li>
+                <li>虚假信息检测与文本可信度评估</li>
+                <li>多智能体系统在NLP中的应用</li>
+                <li>科技文献自动分析与综述生成</li>
             </ul>
         </section>
         
         <section>
-            <h2>教育背景</h2>
-            <p>大连外国语大学 软件学院 | 硕士在读</p>
+            <h2><i class="fa fa-graduation-cap"></i>教育背景</h2>
+            <p>大连外国语大学 软件学院 | 硕士在读 (2023-至今)</p>
+            <p>研究方向：自然语言处理、虚假信息检测</p>
         </section>
-        
-        <a href="https://github.com/may3rr" class="github-link" target="_blank">在 GitHub 上关注我</a>
+        <section>
+            <h2><i class="fa fa-file-text"></i>论文与项目仓库</h2>
+            <div class="publication">
+                <h3>Generation of Scientific Literature Surveys Based on Large Language Models (LLM) and Multi-Agent Systems (MAS)</h3>
+                <p>
+                    <strong>Haobo Lv</strong>
+                    <span class="badge">NLPCC 2024</span>
+                    <span class="badge">CCF-C</span>
+                </p>
+                <div style="margin-top: 0.5em">
+                    <a href="https://link.springer.com/chapter/10.1007/978-981-97-9443-0_14" class="social-link" style="display: inline-block">
+                        <i class="fa fa-file-pdf-o"></i>&nbsp; PDF
+                    </a>
+                    <a href="#" class="social-link" style="display: inline-block; margin-left: 1em">
+                        <i class="fa fa-github"></i>&nbsp; View on GitHub
+                    </a>
+                </div>
+            </div>
+            <p>基于大语言模型的科技文献综述自动生成系统</p>
+        </section>
+        <section>
+            <h2><i class="fa fa-envelope"></i>联系方式</h2>
+            <div class="contact-info">
+                <i class="fa fa-envelope"></i>
+                <a href="mailto:lvhaobo@foxmail.com.com">lvhaobo@foxmail.com</a>
+            </div>
+            <div class="contact-info">
+                <i class="fa fa-map-marker"></i>
+                大连外国语大学
+            </div>
+        </section>
     </main>
 </body>
 </html>
