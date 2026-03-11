@@ -1,551 +1,69 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haobo Lv - Personal Page</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- 引入 Noto Serif SC (思源宋体) 用于中文和英文衬线 -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-
-    <style>
-        /* --- 1. 变量定义 --- */
-        :root {
-            --primary-color: #0066cc;
-            --text-main: #1a202c;
-            --text-secondary: #4a5568;
-            --border-color: rgba(0, 0, 0, 0.08);
-            
-            /* Aurora 变量 */
-            --white: #ffffff;
-            --black: #000000;
-            --transparent: transparent;
-            --aurora-blue-500: #3b82f6;
-            --aurora-indigo-300: #a5b4fc;
-            --aurora-blue-300: #93c5fd;
-            --aurora-violet-200: #ddd6fe;
-            --aurora-blue-400: #60a5fa;
-        }
-
-        [data-theme="dark"] {
-            --primary-color: #58a6ff;
-            --text-main: #e6edf3;
-            --text-secondary: #8b949e;
-            --border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            /* 修改字体为衬线体/宋体优先 */
-            font-family: "Noto Serif SC", "Songti SC", "SimSun", "Times New Roman", serif;
-            line-height: 1.6;
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
-
-        a { text-decoration: none; color: var(--primary-color); transition: all 0.2s; }
-        a:hover { text-decoration: underline; }
-
-        /* --- 2. Aurora 背景 (保持极光) --- */
-        .aurora-bg-fixed {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-            background-color: #fafafa; transition: background-color 0.3s ease;
-        }
-        [data-theme="dark"] .aurora-bg-fixed { background-color: #050505; }
-
-        .aurora-effect {
-            --white-gradient: repeating-linear-gradient(100deg, var(--white) 0%, var(--white) 7%, var(--transparent) 10%, var(--transparent) 12%, var(--white) 16%);
-            --dark-gradient: repeating-linear-gradient(100deg, var(--black) 0%, var(--black) 7%, var(--transparent) 10%, var(--transparent) 12%, var(--black) 16%);
-            --aurora-gradient: repeating-linear-gradient(100deg, var(--aurora-blue-500) 10%, var(--aurora-indigo-300) 15%, var(--aurora-blue-300) 20%, var(--aurora-violet-200) 25%, var(--aurora-blue-400) 30%);
-            position: absolute; inset: -10px;
-            filter: blur(10px) invert(1); opacity: 0.5; will-change: transform;
-            background-image: var(--white-gradient), var(--aurora-gradient);
-            background-size: 300% 200%; background-position: 50% 50%, 50% 50%;
-            mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
-            -webkit-mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
-        }
-        [data-theme="dark"] .aurora-effect { background-image: var(--dark-gradient), var(--aurora-gradient); filter: blur(10px) invert(0); }
-        .aurora-effect::after {
-            content: ""; position: absolute; inset: 0;
-            background-image: var(--white-gradient), var(--aurora-gradient);
-            background-size: 200% 100%; background-attachment: fixed; mix-blend-mode: difference;
-            animation: aurora-anim 60s linear infinite;
-        }
-        [data-theme="dark"] .aurora-effect::after { background-image: var(--dark-gradient), var(--aurora-gradient); }
-        @keyframes aurora-anim { from { background-position: 50% 50%, 50% 50%; } to { background-position: 350% 50%, 350% 50%; } }
-
-        /* --- 3. 页面布局 --- */
-        .page-layout {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
-        }
-
-        /* --- 4. 左侧边栏 (全透明，靠上) --- */
-        .sidebar {
-            width: 320px;
-            height: 100vh;
-            position: sticky;
-            top: 0;
-            flex-shrink: 0;
-            
-            /* 去掉磨砂和背景色 */
-            background-color: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            border: none; /* 也可以去掉边框，让其彻底融入背景 */
-            
-            /* 布局调整：靠上对齐 */
-            padding: 80px 40px; /* 顶部增加 padding 让它不要贴着浏览器顶边缘 */
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 水平居中 */
-            justify-content: flex-start; /* 垂直靠上 */
-            
-            overflow-y: auto;
-            z-index: 10;
-        }
-        .sidebar::-webkit-scrollbar { width: 0; }
-
-        .avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            /* 头像加一点阴影让它从背景中浮出来 */
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            border: 3px solid rgba(255,255,255,0.8);
-        }
-        [data-theme="dark"] .avatar { border-color: rgba(255,255,255,0.1); }
-
-        .name-cn {
-            font-family: "Noto Serif SC", serif;
-            font-size: 32px; /* 稍微大一点 */
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .title {
-            font-size: 15px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            font-weight: 600;
-            /* 去掉背景块，让文字直接显示 */
-            background: transparent;
-            padding: 0;
-        }
-
-        /* 旋转动画 */
-        .rotate-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            /* 这里的字体可以保留无衬线(Outfit)或者改为 Serif，这里用 Outfit 配合数字比较现代 */
-            font-family: 'Outfit', sans-serif; 
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: var(--text-secondary);
-            flex-wrap: wrap;
-        }
-        
-        #rotate-target {
-            background-color: var(--primary-color);
-            color: #fff;
-            
-            /* 修复蓝框冗余：增大 padding + 使用 content-box */
-            padding: 2px 16px;
-            box-sizing: content-box;
-
-            border-radius: 6px;
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            height: 1.5em; 
-            overflow: hidden; 
-            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            vertical-align: middle;
-            /* 稍微调整文字位置 */
-            padding-bottom: 2px; 
-        }
-        
-        .tr-wrapper { display: flex; align-items: center; white-space: nowrap; }
-        .tr-word { display: inline-flex; white-space: nowrap; }
-        .tr-element { display: inline-block; opacity: 0; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.2, 1, 0.4, 1), opacity 0.4s ease; }
-        .tr-element.in { opacity: 1; transform: translateY(0); }
-        .tr-element.out { opacity: 0; transform: translateY(-100%); }
-        .tr-space { width: 0.3em; }
-        .ghost-measurer, .sr-only { position: absolute; visibility: hidden; clip: rect(0,0,0,0); }
-
-        /* 侧边栏联系方式 (紧跟上面，不再沉底) */
-        .contact-info { 
-            width: 100%; 
-            font-size: 14px; 
-            color: var(--text-secondary); 
-            margin-top: 10px; /* 离上面的社交图标近一点 */
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 让文字居中 */
-        }
-        .contact-item { display: flex; align-items: center; margin-bottom: 8px; gap: 8px; }
-        .contact-item i { color: var(--primary-color); font-size: 0.9em; }
-        
-        .social-row { display: flex; justify-content: center; gap: 18px; margin-bottom: 20px; width: 100%; }
-        .social-btn { color: var(--text-secondary); font-size: 1.3rem; transition: color 0.2s; }
-        .social-btn:hover { color: var(--primary-color); }
-
-        /* --- 5. 右侧主要内容 --- */
-        .main-content {
-            flex-grow: 1;
-            background-color: transparent;
-            padding: 80px 80px; 
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content-inner { max-width: 800px; width: 100%; }
-
-        section { margin-bottom: 60px; animation: fadeInUp 0.6s ease-out; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-title {
-            font-family: "Noto Serif SC", serif;
-            font-size: 24px;
-            font-weight: 700;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 12px;
-            margin-bottom: 30px;
-            color: var(--text-main);
-        }
-
-        p { margin-bottom: 20px; text-align: justify; color: var(--text-main); font-size: 1.05rem; }
-        strong { color: var(--primary-color); font-weight: 600; }
-
-        /* Paper List */
-        .paper-item {
-            margin-bottom: 30px;
-            padding-left: 18px;
-            border-left: 3px solid transparent;
-            transition: border-left 0.2s;
-        }
-        .paper-item:hover { border-left-color: var(--primary-color); }
-
-        .paper-title {
-            font-family: "Noto Serif SC", serif; /* 标题也用衬线体 */
-            font-size: 18px;
-            font-weight: 700;
-            display: block;
-            margin-bottom: 6px;
-            color: var(--text-main);
-            line-height: 1.4;
-        }
-        .paper-title:hover { color: var(--primary-color); }
-
-        .paper-authors { font-size: 15px; color: var(--text-secondary); margin-bottom: 6px; }
-        .paper-venue { font-size: 14px; color: var(--text-secondary); font-style: italic; }
-        
-        .badge {
-            display: inline-block; font-family: -apple-system, sans-serif; /* 标签还是用无衬线好看点 */
-            font-size: 12px; padding: 1px 6px; border-radius: 4px;
-            margin-left: 8px; font-weight: 500;
-        }
-        .badge-review { background: rgba(255, 243, 205, 0.7); color: #856404; border: 1px solid rgba(0,0,0,0.05); }
-        .badge-pub { background: rgba(212, 237, 218, 0.7); color: #155724; border: 1px solid rgba(0,0,0,0.05); }
-        [data-theme="dark"] .badge-review { background: rgba(255, 243, 205, 0.15); color: #ffda6a; }
-        [data-theme="dark"] .badge-pub { background: rgba(212, 237, 218, 0.15); color: #7ee787; }
-
-        /* News List */
-        .news-list { list-style: none; }
-        .news-item { display: flex; margin-bottom: 15px; font-size: 15px; }
-        .news-date { font-family: 'Outfit', monospace; font-weight: bold; min-width: 100px; color: var(--text-secondary); }
-
-        /* Theme Switcher */
-        .theme-switch {
-            position: fixed; top: 30px; right: 40px;
-            width: 40px; height: 40px;
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-main); border-radius: 50%;
-            cursor: pointer; z-index: 100;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; transition: all 0.3s;
-        }
-        .theme-switch:hover { background: rgba(0,0,0,0.05); }
-        [data-theme="dark"] .theme-switch:hover { background: rgba(255,255,255,0.1); }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .page-layout { flex-direction: column; }
-            .sidebar {
-                width: 100%; height: auto; position: relative;
-                padding: 60px 20px 30px 20px;
-            }
-            .main-content { padding: 30px 20px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jackie Lyu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fafafa;
+      color: #1d1d1f;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .center {
+      text-align: center;
+      opacity: 0;
+      animation: fade 0.8s ease forwards;
+    }
+    .name {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 36px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
+    }
+    .entry {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .entry a {
+      color: #1d1d1f;
+      text-decoration: none;
+      border-bottom: 2px solid #1d1d1f;
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+    .entry a:hover { opacity: 0.5; }
+    .sub {
+      font-size: 13px;
+      color: #86868b;
+    }
+    .sub a {
+      color: #86868b;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .sub a:hover { color: #1d1d1f; }
+    @keyframes fade {
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-
-    <!-- 1. 极光背景 -->
-    <div class="aurora-bg-fixed">
-        <div class="aurora-effect"></div>
-    </div>
-
-    <button class="theme-switch" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i>
-    </button>
-
-    <div class="page-layout">
-        
-        <!-- 2. 左侧边栏：全透明，内容靠上 -->
-        <aside class="sidebar">
-            <img src="img/avatar.jpeg" alt="Haobo Lv" class="avatar">
-            <div class="name-cn">Haobo Lv</div>
-            <div class="title">Master Student @ DLUFL</div>
-
-            <!-- 动画 -->
-            <div class="rotate-wrapper">
-                <span>Focusing on</span>
-                <div id="rotate-target">
-                    <span class="sr-only"></span>
-                    <div class="tr-wrapper"></div>
-                </div>
-            </div>
-
-            <div class="social-row">
-                <a href="https://github.com/may3rr" class="social-btn" target="_blank"><i class="fa-brands fa-github"></i></a>
-                <a href="mailto:lvhaobo@foxmail.com" class="social-btn"><i class="fa-solid fa-envelope"></i></a>
-            </div>
-
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>大连外国语大学 软件学院</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-solid fa-envelope"></i>
-                    <a href="mailto:lvhaobo@foxmail.com">lvhaobo@foxmail.com</a>
-                </div>
-            </div>
-        </aside>
-
-        <!-- 3. 右侧内容 -->
-        <main class="main-content">
-            <div class="content-inner">
-                
-                <section id="about">
-                    <h3 class="section-title">个人简介 (Biography)</h3>
-                    <p>
-                        我是一名在大连外国语大学软件学院就读的硕士研究生，主要研究方向为自然语言处理 (NLP) 和虚假信息检测。
-                    </p>
-                    <p>
-                        目前，我专注于探索 <strong>大型语言模型 (LLM)</strong> 在科技文献综述生成和虚假信息检测领域的应用。通过结合 <strong>多智能体系统 (Multi-Agent Systems)</strong> 和深度学习技术，致力于开发创新的解决方案来提升信息的可靠性和可访问性。
-                    </p>
-                </section>
-
-                <section id="news">
-                    <h3 class="section-title">新闻动态 (News)</h3>
-                    <ul class="news-list">
-                        <li class="news-item">
-                            <span class="news-date">[2025.11]</span>
-                            <span>获第四届东三省信息资源管理论坛青年专场一等奖。</span>
-                        </li>
-                        <li class="news-item">
-                            <span class="news-date">[2025.09]</span>
-                            <span>SMP 2025 大模型报告生成挑战赛复赛第二名。</span>
-                        </li>
-                        <li class="news-item">
-                            <span class="news-date">[2024.05]</span>
-                            <span>论文被 <strong>NLPCC 2024</strong> 录用 (Oral Presentation)。</span>
-                        </li>
-                    </ul>
-                </section>
-
-                <section id="publications">
-                    <h3 class="section-title">发表论文 (Publications)</h3>
-                    
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">
-                            An LLM-driven Scientific Literature Surveys Generation Framework Based on Multi-Agent and RAG
-                        </a>
-                        <div class="paper-authors">
-                            Qi, Ruihua, <strong>Lyu, Haobo</strong>, Li, Weilong.
-                        </div>
-                        <div class="paper-venue">
-                            Submitted to PeerJ Computer Science. <span class="badge badge-review">Under Review</span>
-                        </div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">
-                            CLIP引导增强与跨模态层次注意力的虚假新闻检测
-                        </a>
-                        <div class="paper-authors">
-                            祁瑞华, <strong>吕浩博</strong>, 宗睿, 李伟龙, 陈淑琴, 郭旭.
-                        </div>
-                        <div class="paper-venue">
-                            数据分析与知识发现. <span class="badge badge-review">Under Review</span>
-                        </div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="https://link.springer.com/chapter/10.1007/978-981-97-9443-0_14" class="paper-title">
-                            Generation of Scientific Literature Surveys Based on Large Language Models (LLM) and Multi-Agent Systems (MAS)
-                        </a>
-                        <div class="paper-authors">
-                            Qi, Ruihua, Li, Weilong, <strong>Lyu, Haobo</strong>.
-                        </div>
-                        <div class="paper-venue">
-                            NLPCC 2024 (CCF-C). <span class="badge badge-pub">Published</span>
-                        </div>
-                        <div style="font-size: 13px; margin-top: 5px; font-family: sans-serif;">
-                            <a href="https://link.springer.com/chapter/10.1007/978-981-97-9443-0_14" style="margin-right: 10px;">[PDF]</a>
-                            <a href="https://github.com/may3rr/MASS-Survey">[Code]</a>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="projects">
-                    <h3 class="section-title">科研经历 (Research Experience)</h3>
-                    
-                    <div class="paper-item">
-                        <div class="paper-title">SMP 2025 大模型报告生成挑战赛</div>
-                        <div class="paper-authors">算法架构设计 | 初赛第一 / 复赛第二</div>
-                        <p style="font-size: 0.95rem; margin-top: 8px; color: var(--text-secondary);">
-                            设计并实现基于多 Agent 协作的五阶段报告生成系统，集成 RAG 检索增强技术。引入基于 diff 算法的精确字数控制技术，有效解决长文本生成不可控问题。
-                        </p>
-                    </div>
-                    
-                    <div class="paper-item">
-                        <div class="paper-title">NLPCC 2024 自动文献综述生成系统</div>
-                        <div class="paper-authors">算法架构设计 | Oral 报告</div>
-                        <p style="font-size: 0.95rem; margin-top: 8px; color: var(--text-secondary);">
-                            负责算法架构设计及面向 Qwen/GPT-4o 的 Prompt Engineering。建立基于 ROUGE 等指标的自动化效果评测体系。
-                        </p>
-                    </div>
-                </section>
-
-            </div>
-        </main>
-    </div>
-
-    <script>
-        // 保持之前的 JS 逻辑不变
-        class TextRotate {
-            constructor(element, options = {}) {
-                this.container = typeof element === 'string' ? document.querySelector(element) : element;
-                if (!this.container) return;
-                this.srElement = this.container.querySelector('.sr-only');
-                this.wrapper = this.container.querySelector('.tr-wrapper');
-                this.texts = options.texts || [];
-                this.rotationInterval = options.rotationInterval || 2000;
-                this.staggerDuration = options.staggerDuration || 0.05;
-                this.currentTextIndex = 0;
-                this.isAnimating = false;
-                if (this.texts.length > 0) {
-                    this.updateWidth(this.texts[0]);
-                    this.render(this.currentTextIndex, true);
-                    setInterval(() => this.next(), this.rotationInterval);
-                }
-            }
-            updateWidth(text) {
-                const ghost = document.createElement('div');
-                ghost.className = 'ghost-measurer'; ghost.textContent = text;
-                document.body.appendChild(ghost);
-                const width = ghost.getBoundingClientRect().width;
-                document.body.removeChild(ghost);
-                this.container.style.width = `${width}px`;
-            }
-            splitIntoCharacters(text) {
-                if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
-                    const segmenter = new Intl.Segmenter("en", { granularity: "grapheme" });
-                    return Array.from(segmenter.segment(text), ({ segment }) => segment);
-                }
-                return Array.from(text);
-            }
-            async render(index, isInitial = false) {
-                if (this.isAnimating && !isInitial) return;
-                this.isAnimating = true;
-                const currentText = this.texts[index];
-                if(this.srElement) this.srElement.textContent = currentText;
-                if (!isInitial) {
-                    this.updateWidth(currentText);
-                    const oldElements = this.wrapper.querySelectorAll('.tr-element');
-                    let maxExitDelay = 0;
-                    oldElements.forEach((el, i) => {
-                        const delay = i * 0.03; 
-                        el.style.transitionDelay = `${delay}s`;
-                        el.classList.remove('in'); el.classList.add('out');
-                        if (delay > maxExitDelay) maxExitDelay = delay;
-                    });
-                    await new Promise(resolve => setTimeout(resolve, (maxExitDelay + 0.4) * 1000));
-                }
-                this.wrapper.innerHTML = '';
-                const words = currentText.split(" ");
-                let globalCharIndex = 0;
-                words.forEach((word, i) => {
-                    const wordSpan = document.createElement('span');
-                    wordSpan.className = 'tr-word';
-                    const chars = this.splitIntoCharacters(word);
-                    chars.forEach((char) => {
-                        const charSpan = document.createElement('span');
-                        charSpan.textContent = char; charSpan.className = 'tr-element';
-                        charSpan.style.transitionDelay = `${globalCharIndex * this.staggerDuration}s`;
-                        wordSpan.appendChild(charSpan); globalCharIndex++;
-                    });
-                    this.wrapper.appendChild(wordSpan);
-                    if (i !== words.length - 1) {
-                        const space = document.createElement('span');
-                        space.innerHTML = '&nbsp;'; space.className = 'tr-space';
-                        this.wrapper.appendChild(space);
-                    }
-                });
-                this.wrapper.offsetHeight;
-                this.wrapper.querySelectorAll('.tr-element').forEach(el => el.classList.add('in'));
-                this.currentTextIndex = index; this.isAnimating = false;
-            }
-            next() {
-                const nextIndex = (this.currentTextIndex + 1) % this.texts.length;
-                this.render(nextIndex);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            new TextRotate('#rotate-target', {
-                texts: ["NLP", "LLMs", "Agents", "RAG", "Coding"],
-                rotationInterval: 2500, staggerDuration: 0.04
-            });
-        });
-
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            body.setAttribute('data-theme', newTheme);
-            document.querySelector('.theme-switch i').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            localStorage.setItem('theme', newTheme);
-        }
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme) {
-            document.body.setAttribute('data-theme', savedTheme);
-            document.querySelector('.theme-switch i').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        } else if (systemPrefersDark) {
-            document.body.setAttribute('data-theme', 'dark');
-            document.querySelector('.theme-switch i').className = 'fas fa-sun';
-        }
-    </script>
+  <div class="center">
+    <div class="name">Jackie Lyu</div>
+    <div class="entry"><a href="https://jackielyu.is-a.dev/Kouzer/" target="_blank" rel="noopener noreferrer">Kouzer</a></div>
+    <div class="sub"><a href="https://github.com/may3rr" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+  </div>
 </body>
 </html>
